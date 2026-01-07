@@ -1,4 +1,3 @@
-# confidence.py
 def calibrate_confidence(raw_confidence: float, rule_applied: bool):
     if rule_applied:
         return min(raw_confidence + 0.05, 0.99)
