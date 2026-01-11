@@ -1,8 +1,11 @@
+// server.js
 import dotenv from "dotenv";
-dotenv.config({ path: "./.env" }); // 👈 REQUIRED
+dotenv.config({ path: "./.env" });
 
 import mongoose from "mongoose";
 import app from "./app.js";
+import { initSocket } from "./socket.js";
+import http from "http";
 
 const PORT = process.env.PORT || 4000;
 
@@ -10,8 +13,15 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB connected");
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+
+    const server = http.createServer(app);
+
+    // 🔥 Attach socket.io to SAME server
+    initSocket(server);
+
+    // ✅ THIS IS THE IMPORTANT LINE
+    server.listen(PORT, () => {
+      console.log(`Server + WebSocket running on port ${PORT}`);
     });
   })
   .catch((err) => {

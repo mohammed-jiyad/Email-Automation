@@ -44,6 +44,28 @@ const emailSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  autoReplied: {
+  type: Boolean,
+  default: false,
+},
+
+autoReplyReason: {
+  type: String,
+},
+autoReplyTemplate: {
+  type: String,
+},
+
+autoReplyAt: {
+  type: Date,
+},
+deliveryStatus: {
+  type: String,
+  enum: ["PENDING", "SENT", "FAILED"],
+  default: "PENDING",
+},
+
+
 });
 
 export const Email = mongoose.model("Email", emailSchema);

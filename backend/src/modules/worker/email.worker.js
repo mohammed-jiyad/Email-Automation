@@ -8,6 +8,12 @@ import axios from "axios";
 import { Email } from "../emails/email.model.js";
 import { redisConnection } from "../../config/redis.js";
 
+import { AUTO_REPLY_POLICY } from "../replies/autoReplyPolicy.js";
+import templates from "../replies/templates.json" assert { type: "json" };
+
+import { emailDLQ } from "../queue/email.dlq.js";
+import { sendEmail } from "../replies/emailSender.js";
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("Worker DB connected"))
@@ -39,18 +45,60 @@ const worker = new Worker(
     const ml = await classifyEmail(email.subject, email.body);
 
     if (ml) {
-      email.category = ml.category;
-      email.confidence = ml.confidence;
-      email.classifiedBy = ml.used_rules ? "HYBRID" : "BERT";
-    } else {
-      email.category = "Uncategorized";
-      email.confidence = 0;
-      email.classifiedBy = "NONE";
+  email.category = ml.category;
+  email.confidence = ml.confidence;
+  email.classifiedBy = ml.used_rules ? "HYBRID" : "BERT";
+} else {
+  email.category = "Uncategorized";
+  email.confidence = 0;
+  email.classifiedBy = "NONE";
+}
+
+/* ===========================
+   AUTO-REPLY LOGIC (HERE)
+   =========================== */
+
+const policy = AUTO_REPLY_POLICY[email.category];
+if (policy?.enabled && email.confidence >= policy.threshold) {
+  const reply = templates[email.category];
+
+  if (reply) {
+    try {
+      await sendEmail({
+        to: email.from,
+        subject: "Regarding your query",
+        body: reply,
+      });
+
+      console.log("📤 Auto-reply email sent to:", email.from);
+
+      email.autoReplied = true;
+email.deliveryStatus = "SENT";
+email.autoReplyTemplate = email.category;
+email.autoReplyReason = `Confidence ${email.confidence} >= ${policy.threshold}`;
+email.autoReplyAt = new Date();
+
+
+    } catch (err) {
+      console.error("❌ Email sending failed:", err.message);
+
+      email.deliveryStatus = "FAILED";
+await email.save(); // save failure state before throwing
+throw new Error("Email delivery failed");
     }
+  }
+}
 
-    email.status = "PROCESSED";
-    await email.save();
 
+
+/* ===========================
+   END AUTO-REPLY LOGIC
+   =========================== */
+
+email.status = "PROCESSED";
+await email.save();
+
+  
     return { success: true };
   },
   {
@@ -62,6 +110,12 @@ worker.on("completed", (job) => {
   console.log(`✅ Job ${job.id} completed`);
 });
 
-worker.on("failed", (job, err) => {
-  console.error(`❌ Job ${job?.id} failed`, err);
+worker.on("failed", async (job, err) => {
+  console.error(`❌ Job ${job?.id} failed`, err.message);
+
+  await emailDLQ.add("failed-email", {
+    emailId: job?.data?.emailId,
+    reason: err.message,
+    failedAt: new Date(),
+  });
 });
