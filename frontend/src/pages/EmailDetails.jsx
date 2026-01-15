@@ -7,47 +7,72 @@ export default function EmailDetails() {
   const [email, setEmail] = useState(null);
 
   useEffect(() => {
-    fetchEmailById(id).then((res) => setEmail(res.data));
+    fetchEmailById(id).then(res => setEmail(res.data));
   }, [id]);
 
-  if (!email) return <p style={{ padding: 20 }}>Loading email...</p>;
+  if (!email) return <p style={{ padding: 24 }}>Loading email…</p>;
 
   return (
-    <div style={{ padding: 20, maxWidth: 800 }}>
-      <Link to="/">← Back to Dashboard</Link>
+    <div className="details-page">
+      <Link to="/" className="muted">
+        ← Back to Dashboard
+      </Link>
 
-      <h2 style={{ marginTop: 20 }}>{email.subject}</h2>
+      <div className="details-layout">
+        {/* LEFT */}
+        <div className="details-main">
+          <h2>{email.subject}</h2>
 
-      <p><strong>From:</strong> {email.from}</p>
-      <p><strong>Status:</strong> {email.status}</p>
-      <p><strong>Category:</strong> {email.category || "—"}</p>
-      <p>
-        <strong>Confidence:</strong>{" "}
-        {email.confidence
-          ? `${(email.confidence * 100).toFixed(2)}%`
-          : "—"}
-      </p>
+          <div className="details-meta">
+            <span><strong>From:</strong> {email.from}</span>
+            <span><strong>Category:</strong> {email.category || "—"}</span>
+          </div>
 
-      <hr />
+          <h4>Email Body</h4>
+          <div className="email-body">
+            {email.body}
+          </div>
 
-      <h3>Email Body</h3>
-      <p style={{ whiteSpace: "pre-wrap" }}>{email.body}</p>
+          {/* 🔥 ACTIONS ROW */}
+          <div className="details-actions">
+            <button className="secondary-btn" disabled>
+              Retry Automation
+            </button>
 
-      <hr />
+            <button className="secondary-btn" disabled>
+              View Raw JSON
+            </button>
+          </div>
+        </div>
 
-      <h3>Automation</h3>
-      <p><strong>Auto Replied:</strong> {email.autoReplied ? "Yes" : "No"}</p>
+        {/* RIGHT */}
+        <div className="details-side">
+          <h4>Status</h4>
+          <span className="status-pill success">
+            {email.status}
+          </span>
 
-      {email.autoReplied && (
-        <>
-          <p><strong>Template:</strong> {email.autoReplyTemplate}</p>
-          <p><strong>Reason:</strong> {email.autoReplyReason}</p>
+          <h4>Automation</h4>
+          <p><strong>Auto Replied:</strong> {email.autoReplied ? "Yes" : "No"}</p>
+
+          {email.autoReplied && (
+            <>
+              <p><strong>Template:</strong> {email.autoReplyTemplate}</p>
+              <p><strong>Reason:</strong> {email.autoReplyReason}</p>
+            </>
+          )}
+
+          <h4>Confidence</h4>
           <p>
-            <strong>Auto Reply At:</strong>{" "}
-            {new Date(email.autoReplyAt).toLocaleString()}
+            {email.confidence
+              ? `${(email.confidence * 100).toFixed(2)}%`
+              : "—"}
           </p>
-        </>
-      )}
+
+          <h4>Received</h4>
+          <p>{new Date(email.receivedAt).toLocaleString()}</p>
+        </div>
+      </div>
     </div>
   );
 }

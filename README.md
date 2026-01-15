@@ -27,13 +27,69 @@ The system follows an **event-driven architecture**:
 - Messages are stored idempotently to avoid duplicates
 - Processing is delegated to background workers
 - Classification is handled by an isolated ML service (BERT)
-- Confidence scores determine safe auto-replies
+- Confidence thresholds determine safe auto-replies
 - Delivery results are tracked and failures routed to a DLQ
 - Live updates are pushed to the frontend via WebSockets
 
 This design enables **scalability, fault isolation, intelligent automation, and real-time observability**.
 
 ---
+
+## 🖥️ Live Dashboard
+
+The frontend provides **real-time visibility** into the entire automation pipeline.
+
+**Key capabilities:**
+
+- Live email updates via WebSockets
+
+- Stats overview:
+
+  - Total emails
+
+  - Auto-replied emails
+
+  - Pending deliveries
+
+  - Failed deliveries
+
+- Filter by:
+
+  - Processing status (QUEUED, PROCESSED)
+
+  - Auto-reply state
+
+- Infinite scrolling for large datasets
+
+- Detailed email view with:
+
+  - Classification result
+
+  - Confidence score
+
+  - Auto-reply reasoning
+
+  - Delivery status
+
+### 📸 UI Screenshots
+
+#### Dashboard
+
+<p align="center">
+  <img src="screenshots/dashboard.png" width="1000"/>
+</p>
+
+#### Email Details View
+
+<p align="center">
+  <img src="screenshots/email_details.png" width="900"/>
+</p>
+
+#### Workflow Tester
+
+<p align="center">
+  <img src="screenshots/workflow_tester.png" width="900"/>
+</p>
 
 ## 🏗️ System Architecture
 
@@ -176,33 +232,7 @@ Email-Automation/
 
 11. Frontend dashboard updates in real time
 
-### 📊 Dashboard Capabilities
-
-- Live email updates (WebSockets)
-
-- Infinite scrolling
-
-- Filter by:
-
-  - Status (QUEUED, PROCESSED)
-
-  - Auto-replied
-
-- View category & confidence
-
-- Delivery status tracking
-
-- Retry option for failed emails (DLQ)
-
-- Stats overview:
-
-  - Total emails
-
-  - Auto-replied emails
-
-  - Failed deliveries
-
-### 📦 Sample Email Document
+## 📦 Sample Email Document
 
 ```json
 {
@@ -218,15 +248,17 @@ Email-Automation/
 
 ## 🚧 Project Status
 
-The core backend, ML pipeline, email delivery, and live dashboard are complete.
+**Core system complete and functional**, including:
 
-Planned improvements:
+- Backend ingestion & workers
 
-- Audit logs for all system actions
-- Configurable retry policies for failed deliveries
-- Role-based access control (RBAC)
-- Email provider abstraction (Gmail → SendGrid / SES)
-- UI theming (Dark mode)
+- ML classification pipeline
+
+- Auto-reply automation
+
+- SMTP delivery
+
+- Live dashboard with WebSockets
 
 ## 🎯 Why This Project Matters
 

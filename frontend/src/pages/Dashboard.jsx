@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import StatsCards from "../components/StatsCards";
 import Filters from "../components/Filters";
-import EmailCardsGrid from "../components/EmailCardsGrid";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import EmailTable from "../components/EmailTable";
 import useLiveEmails from "../hooks/useLiveEmails";
+import { Link } from "react-router-dom";
 
 const CARD_HEIGHT = 160;
 
@@ -11,86 +11,124 @@ export default function Dashboard() {
   const [emails, setEmails] = useState([]);
   const [stats, setStats] = useState({});
   const [filters, setFilters] = useState({});
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
+  const pageRef = useRef(1);
   const limit = Math.ceil(window.innerHeight / CARD_HEIGHT) * 3;
 
-  const loadEmails = useCallback(async (reset = false) => {
-    if (loading) return;
+  /* ---------------- LOAD STATS ---------------- */
+  const loadStats = useCallback(async () => {
+    const res = await fetch("http://localhost:4000/stats");
+    const data = await res.json();
 
-    setLoading(true);
-    const currentPage = reset ? 1 : page;
-
-    const params = new URLSearchParams({
-      ...filters,
-      page: currentPage,
-      limit,
+    setStats({
+      total: data.total,
+      autoReplied: data.autoReplied,
+      pending: data.pending,
+      failed: data.failed,
     });
+  }, []);
 
-    const res = await fetch(`http://localhost:4000/emails?${params}`);
-    const json = await res.json();
+  /* ---------------- LOAD EMAILS ---------------- */
+  const fetchEmails = useCallback(
+    async ({ reset = false } = {}) => {
+      if (loading) return;
 
-    setEmails((prev) =>
-      reset ? json.data : [...prev, ...json.data]
-    );
+      setLoading(true);
 
-    setHasMore(
-      (reset ? 0 : emails.length) + json.data.length < json.meta.total
-    );
+      const page = reset ? 1 : pageRef.current;
 
-    setPage(currentPage + 1);
+      const params = new URLSearchParams({
+        ...filters,
+        page,
+        limit,
+      });
 
-    const statsRes = await fetch("http://localhost:4000/stats");
-    setStats(await statsRes.json());
+      try {
+        const res = await fetch(
+          `http://localhost:4000/emails?${params}`
+        );
+        const json = await res.json();
 
-    setLoading(false);
-  }, [filters, page, loading, emails.length, limit]);
+        setEmails(prev =>
+          reset ? json.data : [...prev, ...json.data]
+        );
 
-  // Reload when filters change
+        pageRef.current = page + 1;
+        setHasMore(json.data.length === limit);
+      } catch (err) {
+        console.error("Failed to load emails", err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [filters, loading, limit]
+  );
+
+  /* ---------------- INITIAL LOAD ---------------- */
   useEffect(() => {
-    setEmails([]);
-    setPage(1);
-    setHasMore(true);
-    loadEmails(true);
+    pageRef.current = 1;
+    fetchEmails({ reset: true });
+    loadStats();
+  }, []); // run ONCE
+
+  /* ---------------- FILTER CHANGE ---------------- */
+  useEffect(() => {
+    pageRef.current = 1;
+    fetchEmails({ reset: true });
+    loadStats();
   }, [filters]);
 
-  // 🔴 LIVE EMAIL UPDATES (WebSocket)
-  useLiveEmails((updatedEmail) => {
-    setEmails((prev) => {
+  /* ---------------- LIVE UPDATES ---------------- */
+  useLiveEmails(updatedEmail => {
+    setEmails(prev => {
       const index = prev.findIndex(e => e._id === updatedEmail._id);
-
       if (index !== -1) {
         const copy = [...prev];
         copy[index] = updatedEmail;
         return copy;
       }
-
       return [updatedEmail, ...prev];
     });
+
+    loadStats();
   });
 
-  // Infinite scroll trigger
-  const loadMoreRef = useInfiniteScroll(
-    () => loadEmails(false),
-    hasMore && !loading
-  );
-
+  /* ---------------- UI ---------------- */
   return (
-    <div style={{ padding: 24 }}>
-      <h1 onClick={() => setFilters({})} style={{ cursor: "pointer" }}>
-        Email Automation Dashboard
-      </h1>
+    <div className="dashboard">
+      <div className="dashboard-header">
+        <div>
+          <h1>Email Automation</h1>
+  
+        </div>
+
+        <Link to="/tester" className="primary-btn">
+          + Workflow Tester
+        </Link>
+      </div>
 
       <StatsCards stats={stats} />
-      <Filters filters={filters} setFilters={setFilters} />
 
-      <EmailCardsGrid emails={emails} />
+      <div className="toolbar">
+        <Filters filters={filters} setFilters={setFilters} />
+      </div>
+
+      <div className={`table-card ${loading ? "loading" : ""}`}>
+
+        <EmailTable emails={emails} loading={loading} />
+      </div>
 
       {hasMore && (
-        <div ref={loadMoreRef} style={{ padding: 20, textAlign: "center" }}>
-          {loading && "Loading more…"}
+        <div style={{ padding: 20, textAlign: "center" }}>
+          <button
+            onClick={() => fetchEmails()}
+            disabled={loading}
+            className="primary-btn"
+          >
+            {loading ? "Loading…" : "Load more"}
+          </button>
         </div>
       )}
     </div>

@@ -8,7 +8,7 @@ export async function getEmails(req, res) {
     limit = 10,
     category,
     autoReplied,
-    status,           // ✅ ADD THIS
+    status,
     deliveryStatus,
   } = req.query;
 
@@ -16,16 +16,17 @@ export async function getEmails(req, res) {
 
   if (category) query.category = category;
 
-  if (autoReplied !== undefined) {
-    query.autoReplied = autoReplied === "true";
-  }
+  if (autoReplied === "true") {
+  query.autoReplied = true;
+}
+if (autoReplied === "false") {
+  query.autoReplied = false;
+}
 
-  // ✅ THIS FIXES QUEUED / PROCESSED
   if (status) {
     query.status = status.toUpperCase();
   }
 
-  // Optional: delivery tracking
   if (deliveryStatus) {
     query.deliveryStatus = deliveryStatus;
   }

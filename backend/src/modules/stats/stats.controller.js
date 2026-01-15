@@ -7,9 +7,9 @@ export async function getStats(req, res) {
   const pending = await Email.countDocuments({ deliveryStatus: "PENDING" });
 
   res.json({
-    totalEmails: total,
+    total,
     autoReplied,
-    failedDeliveries: failed,
-    pendingDeliveries: pending,
+    failed,
+    pending,
   });
 }

@@ -1,12 +1,15 @@
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import StatusBadge from "./StatusBadge";
 
 export default function EmailTable({ emails }) {
+  const navigate = useNavigate();
+
   if (!Array.isArray(emails)) return null;
 
   return (
-    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+    <table className="email-table">
       <thead>
-        <tr style={{ background: "#f3f4f6" }}>
+        <tr>
           <th>From</th>
           <th>Subject</th>
           <th>Category</th>
@@ -17,18 +20,46 @@ export default function EmailTable({ emails }) {
       </thead>
 
       <tbody>
-        {emails.map((email) => (
-          <tr key={email._id} style={{ borderBottom: "1px solid #ddd" }}>
+        {emails.map(email => (
+          <tr
+            key={email._id}
+            className="email-row"
+            data-status={email.status}
+            role="button"
+            tabIndex={0}
+            onClick={() => navigate(`/emails/${email._id}`)}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                navigate(`/emails/${email._id}`);
+              }
+            }}
+          >
             <td>{email.from}</td>
-            <td>{email.subject}</td>
+
+            <td>
+              {/* Keep link look, prevent double navigation */}
+              <Link
+                to={`/emails/${email._id}`}
+                className="link"
+                onClick={e => e.stopPropagation()}
+              >
+                {email.subject}
+              </Link>
+            </td>
+
             <td>{email.category || "—"}</td>
+
             <td>
               {email.confidence
                 ? `${(email.confidence * 100).toFixed(1)}%`
                 : "—"}
             </td>
-            <td>{email.status}</td>
-            <td>{email.autoReplied ? "✅ Yes" : "❌ No"}</td>
+
+            <td>
+              <StatusBadge status={email.status} />
+            </td>
+
+            <td>{email.autoReplied ? "Yes" : "No"}</td>
           </tr>
         ))}
       </tbody>

@@ -1,0 +1,840 @@
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --success-bg: #dcfce7;
+  --success-text: #166534;
+  --warn-bg: #fef9c3;
+  --warn-text: #854d0e;
+  --danger-bg: #fee2e2;
+  --danger-text: #991b1b;
+  min-height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
+  color: var(--text);
+}
+
+
+h1, h2, h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+select, button, input, textarea {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: var(--primary);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.stat-card p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+.stat-card h2 {
+  font-size: 28px;
+}
+
+.toolbar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.table-card {
+  background: #ffffff; /* pure white */
+  border-radius: 18px;
+  padding: 16px;
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.05),
+    0 12px 28px rgba(15, 23, 42, 0.06);
+}
+
+
+
+.email-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.email-table th {
+  text-align: left;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 12px;
+  background: #f9fafb;
+}
+
+.email-table td {
+  padding: 14px 12px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.email-table tr:hover {
+  background: #f8fafc;
+}
+
+.link {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.details-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 96px;
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-title {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: var(--text);
+}
+
+/* ---------- Button polish ---------- */
+.primary-btn {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25);
+}
+
+/* ---------- Stats card hover ---------- */
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #e0e7ff;
+  border-radius: 14px;
+  padding: 16px 18px;
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.05),
+    0 10px 24px rgba(79, 70, 229, 0.08);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat-card::before {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 100%;
+  background: #4f46e5; /* indigo accent */
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+
+
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+}
+
+
+/* ---------- Email row hover ---------- */
+.email-row {
+  transition: background 0.12s ease;
+}
+
+.email-row:hover {
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+/* ---------- Loading polish ---------- */
+.table-card.loading {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+/* ---------- Toolbar inputs ---------- */
+.toolbar select,
+.toolbar button {
+  height: 40px;
+}
+
+/* ---------- Subtle page fade-in ---------- */
+.dashboard {
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard {
+  max-width: 1500px;
+  margin: 16px 16px;          /* keeps floating card look */
+  padding: 32px 28px;
+
+  background: linear-gradient(
+    180deg,
+    #eef2ff 0%,
+    #e0e7ff 100%
+  );
+
+  border-radius: 24px;
+
+  /* 🔥 THIS IS THE FIX */
+  min-height: calc(100vh - 64px);
+
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.10);
+}
+
+
+
+.email-row {
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.email-row:hover {
+  background: #f9fafb;
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 16px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+}
+
+.email-row:active {
+  transform: translateY(0);
+  box-shadow:
+    0 3px 8px rgba(15, 23, 42, 0.12);
+}
+
+
+.email-table tbody tr {
+  position: relative;
+}
+
+.email-row[data-status="PROCESSED"] {
+  background: linear-gradient(
+    90deg,
+    transparent 95%,
+    #dcfce7
+  );
+}
+
+.email-row[data-status="QUEUED"] {
+  background: linear-gradient(
+    90deg,
+    transparent 95%,
+    #fef9c3
+  );
+}
+
+/* ---------- Semantic Stats Cards ---------- */
+
+.stat-card {
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 96px;
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.05),
+    0 10px 24px rgba(15, 23, 42, 0.10);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 32px rgba(15, 23, 42, 0.15);
+}
+
+/* ---- Total (Neutral / Indigo) ---- */
+.stat-card.total {
+  background: linear-gradient(
+    180deg,
+    #eef2ff 0%,
+    #e0e7ff 100%
+  );
+  border: 1px solid #c7d2fe;
+}
+
+/* ---- Auto Replied (Success) ---- */
+.stat-card.success {
+  background: linear-gradient(
+    180deg,
+    #ecfdf5 0%,
+    #dcfce7 100%
+  );
+  border: 1px solid #86efac;
+}
+
+/* ---- Pending (Warning) ---- */
+.stat-card.warning {
+  background: linear-gradient(
+    180deg,
+    #fffbeb 0%,
+    #fef3c7 100%
+  );
+  border: 1px solid #fde68a;
+}
+
+/* ---- Failed (Danger) ---- */
+.stat-card.danger {
+  background: linear-gradient(
+    180deg,
+    #fef2f2 0%,
+    #fee2e2 100%
+  );
+  border: 1px solid #fecaca;
+}
+
+/* ---------- Text Styling ---------- */
+
+.stat-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.stat-value {
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: #0f172a;
+}
+
+/* ---------- Email Details Page ---------- */
+/* ---------- Email Details Layout ---------- */
+
+.details-page {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 24px;
+}
+
+.details-layout {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+/* Main email content */
+.details-main {
+   background: linear-gradient(
+    180deg,
+    #eef2ff 0%,
+    #e0e7ff 100%
+  );
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+.details-main h2 {
+  margin-bottom: 12px;
+}
+
+.details-meta {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+/* ---------- Email Body Enhancement ---------- */
+
+.email-body {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 140px; /* 👈 makes page feel fuller */
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
+}
+
+
+/* Right panel */
+.details-side {
+   background: linear-gradient(
+    180deg,
+    #eef2ff 0%,
+    #e0e7ff 100%
+  );
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+
+.details-side h4 {
+  margin-top: 16px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Status pill */
+.status-pill {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-pill.success {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+
+/* ---------- Details Actions Row ---------- */
+
+.details-actions {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+}
+
+.secondary-btn {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: not-allowed;
+}
+
+
+
+/* Semantic badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge.warning {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.badge.danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ---------- Email Cards (Rows) ---------- */
+
+.email-table tbody tr {
+  background: #ffffff;
+  border-radius: 10px;
+
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* spacing illusion between rows */
+.email-table tbody tr + tr {
+  border-top: 8px solid transparent;
+}
+
+/* Hover state */
+.email-row:hover {
+  background: #f5f7ff; /* very light indigo tint */
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px rgba(79, 70, 229, 0.15);
+}
+
+/* Active (click) */
+.email-row:active {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 10px rgba(79, 70, 229, 0.18);
+}
+
+/* ---------- Workflow Tester ---------- */
+
+.tester-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 32px 20px;
+}
+
+.tester-wrapper {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.tester-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px 32px;
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.05),
+    0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.tester-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tester-header h2 {
+  font-size: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: #f9fafb;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.secondary-btn {
+  background: #f1f5f9;
+  border: 1px solid var(--border);
+  color: #0f172a;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.secondary-btn:hover {
+  background: #e2e8f0;
+}
+
+/* Result cards */
+.result-card {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #ecfeff;
+  font-size: 13px;
+}
+
+.error-card {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 13px;
+}
+
+/* ---------- Workflow Tester (Clean, Minimal) ---------- */
+
+.tester-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.tester-header {
+  margin-bottom: 16px;
+}
+
+.tester-header h2 {
+  margin-bottom: 4px;
+}
+
+.tester-back {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--primary);
+}
+
+.tester-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tester-form label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.tester-form input,
+.tester-form textarea,
+.tester-form select {
+  width: 100%;
+  background: #f9fafb;
+}
+
+.tester-actions {
+  margin-top: 12px;
+}
+
+.tester-result {
+  margin-top: 16px;
+  padding: 12px;
+  background: #ecfeff;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.tester-error {
+  margin-top: 16px;
+  padding: 12px;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+
+/* ---------- Locked Fields (Clear Visual Lock) ---------- */
+
+.locked-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.lock-icon {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* Locked Subject & Body */
+.locked-input,
+.locked-textarea {
+  background: #000000;            /* 👈 grey background */
+  color: #00050c;                 /* muted text */
+  border: 1px dashed #cbd5e1;     /* subtle lock indicator */
+  cursor: not-allowed;
+}
+
+/* Prevent focus highlight */
+.locked-input:focus,
+.locked-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Locked textarea consistency */
+.locked-textarea {
+  resize: none;
+}
+
+
+
+/* ---------- Shared Page Shell ---------- */
+
+.page-shell {
+  max-width: 750px;
+  margin: 32px auto;
+  padding: 0 24px;
+}
+
+/* ---------- Workflow Tester Indigo Surface ---------- */
+
+.tester-surface {
+  background: linear-gradient(
+    180deg,
+    #eef2ff 0%,
+    #e0e7ff 100%
+  );
+  border-radius: 24px;
+  padding: 32px 28px;
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.10);
+}
+
+/* Inner white form container */
+.tester-container {
+  max-width: 720px;
+}
+
+/* Existing tester styles remain unchanged */
+
+/* ---------- FORCE LOCKED FIELD STYLES ---------- */
+
+input.locked-input,
+textarea.locked-textarea {
+  background-color: #e5e7eb !important; /* TRUE grey */
+  color: #374151 !important;
+  border: 1px dashed #cbd5e1 !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Remove focus / active styling */
+input.locked-input:focus,
+textarea.locked-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Prevent resize + native styling */
+textarea.locked-textarea {
+  resize: none;
+}
+
+input.locked-input {
+  -webkit-appearance: none;
+  appearance: none;
+}
