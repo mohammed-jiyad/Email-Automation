@@ -19,7 +19,7 @@ export default function EmailCard({ email }) {
           <button
             onClick={(e) => {
               e.preventDefault();
-              fetch(`http://localhost:4000/emails/${email._id}/retry`, {
+              fetch(`https://email-automation-2-dmld.onrender.com/emails/${email._id}/retry`, {
                 method: "POST",
               });
             }}

@@ -42,7 +42,7 @@ export default function WorkflowTester() {
 
     try {
       const res = await fetch(
-        "http://localhost:4000/ingest/webhook/email",
+        "https://email-automation-2-dmld.onrender.com/ingest/webhook/email",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

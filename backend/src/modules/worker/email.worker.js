@@ -9,7 +9,20 @@ import { Email } from "../emails/email.model.js";
 import { redisConnection } from "../../config/redis.js";
 
 import { AUTO_REPLY_POLICY } from "../replies/autoReplyPolicy.js";
-import templates from "../replies/templates.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const templates = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "../replies/templates.json"),
+    "utf-8"
+  )
+);
+
 
 import { emailDLQ } from "../queue/email.dlq.js";
 import { sendEmail } from "../replies/emailSender.js";

@@ -19,7 +19,7 @@ export default function Dashboard() {
 
   /* ---------------- LOAD STATS ---------------- */
   const loadStats = useCallback(async () => {
-    const res = await fetch("http://localhost:4000/stats");
+    const res = await fetch("https://email-automation-2-dmld.onrender.com/stats");
     const data = await res.json();
 
     setStats({
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
       try {
         const res = await fetch(
-          `http://localhost:4000/emails?${params}`
+          `https://email-automation-2-dmld.onrender.com/emails?${params}`
         );
         const json = await res.json();
 
