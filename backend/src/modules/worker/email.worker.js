@@ -38,7 +38,7 @@ async function classifyEmail(subject, body) {
     const res = await axios.post(
       `${ml_Service}/classify`,
       { subject, body },
-      { timeout: 500000 }
+      { timeout: 50000 }
     );
     return res.data;
   } catch (err) {
