@@ -15,4 +15,4 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-ml/model/bert_email_model/
+
