@@ -34,8 +34,9 @@ mongoose
 
 async function classifyEmail(subject, body) {
   try {
+    const ml_Service=process.env.ML_SERVICE_URL || "http://localhost:8001";
     const res = await axios.post(
-      process.env.ML_SERVICE_URL || "http://localhost:8001/classify",
+      `${ml_Service}/classify`,
       { subject, body },
       { timeout: 5000 }
     );
