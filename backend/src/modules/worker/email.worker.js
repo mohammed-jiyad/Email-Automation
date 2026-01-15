@@ -58,7 +58,9 @@ const worker = new Worker(
 
     const ml = await classifyEmail(email.subject, email.body);
 
-    if (ml) {
+let processedViaFallback = false;
+
+if (ml) {
   email.category = ml.category;
   email.confidence = ml.confidence;
   email.classifiedBy = ml.used_rules ? "HYBRID" : "BERT";
@@ -66,7 +68,9 @@ const worker = new Worker(
   email.category = "Uncategorized";
   email.confidence = 0;
   email.classifiedBy = "NONE";
+  processedViaFallback = true; // 🔥 ML failed
 }
+
 
 /* ===========================
    AUTO-REPLY LOGIC (HERE)
@@ -105,11 +109,11 @@ throw new Error("Email delivery failed");
 
 
 
-/* ===========================
-   END AUTO-REPLY LOGIC
-   =========================== */
 
-email.status = "PROCESSED";
+email.status = processedViaFallback
+  ? "PROCESSED_WITHOUT_ML"
+  : "PROCESSED";
+
 await email.save();
 
   

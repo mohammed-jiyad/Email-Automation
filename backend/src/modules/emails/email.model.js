@@ -22,7 +22,7 @@ const emailSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["RECEIVED", "QUEUED", "PROCESSED"],
+    enum: ["RECEIVED", "QUEUED", "PROCESSED","PROCESSED_WITHOUT_ML"],
     default: "RECEIVED",
   },
 
