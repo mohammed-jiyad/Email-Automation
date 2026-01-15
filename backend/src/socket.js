@@ -6,7 +6,10 @@ let io;
 
 export function initSocket(server) {
   io = new Server(server, {
-    cors: { origin: "http://localhost:5173" },
+    cors: { origin:  [
+      "http://localhost:5173",
+      "https://email-automation-nu-wine.vercel.app"
+    ] },
   });
 
   io.on("connection", (socket) => {
